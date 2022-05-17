@@ -1,0 +1,19 @@
+#sudo docker-compose up -d
+version: '3'
+
+services:
+  postgres-compose-network:
+    image: postgres
+    environment:
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: debian23
+    ports:
+      - "5432:5432"
+    volumes:
+      - /home/gpotdev/Documentos/Estudos/bancoPostgres:/var/lib/postgresql/data 
+    networks:
+      - postgres-compose-network
+      
+networks: 
+  postgres-compose-network:
+    driver: bridge
