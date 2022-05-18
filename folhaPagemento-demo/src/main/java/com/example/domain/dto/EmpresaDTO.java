@@ -3,6 +3,7 @@ package com.example.domain.dto;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import io.swagger.annotations.ApiModel;
 @Data
 @ApiModel(value = "Empresa")
 @NoArgsConstructor
+@AllArgsConstructor
 public class EmpresaDTO {
 
 	private Long id;

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +11,11 @@ import com.example.domain.dto.EmpresaDTO;
 import com.example.domain.model.ContaCorrente;
 import com.example.domain.model.Empresa;
 import com.example.exception.BusinessException;
+import com.example.mapper.AbstractService;
 import com.example.repository.EmpresaRepository;
 
 @Service
-public class EmpresaService {
-
-	private ModelMapper modelMapper;
+public class EmpresaService extends AbstractService {
 
 	@Autowired
 	private EmpresaRepository repository;
@@ -29,17 +27,17 @@ public class EmpresaService {
 	}
 
 	private EmpresaDTO convertToDto(Empresa empresa) {
-		EmpresaDTO dto = modelMapper.map(empresa, EmpresaDTO.class);
+		EmpresaDTO dto = convertToDTO(empresa, EmpresaDTO.class);
 		dto.setBalance(empresa.obterSaldoContaCorrente());
 		return dto;
 	}
 
 	public List<EmpresaDTO> findAll() {
 		List<Empresa> items = repository.findAll();
-		if (ObjectIsNotNullOrIsNotEmpty(items)) {
+		if (items == null || items.isEmpty()) {
 			throw new BusinessException("01", "Nenhuma empresa Encontrada");
 		}
-		return items.stream().map(this::convertToDto).collect(Collectors.toList());
+		return items.stream().map(e -> convertToDto(e)).collect(Collectors.toList());
 	}
 
 	public EmpresaDTO findById(Long id) {
@@ -47,14 +45,9 @@ public class EmpresaService {
 		if (existing.isPresent())
 			return convertToDto(existing.get());
 
-		throw new BusinessException("", "Empresa não encontrada com id: " + id);
+		throw new BusinessException("100", "Empresa não encontrada com id: " + id);
 	}
 
-	public Boolean ObjectIsNotNullOrIsNotEmpty(List<Empresa> obj) {
-		if (obj == null || obj.isEmpty()) {
-			return true;
-		}
-		return false;
-	}
 
+	
 }
