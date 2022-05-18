@@ -1,0 +1,86 @@
+{
+	"info": {
+		"_postman_id": "0f41c0d1-919d-4368-b72c-26207eec5f6d",
+		"name": "MS-Folha-Pagamento",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Empresa",
+			"item": [
+				{
+					"name": "All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/empresa/all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"empresa",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/empresa/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"empresa",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create-Empresa",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"corporateName\": \"EmpresaTeste\",\n    \"balance\": 35.0,\n    \"email\":\"EmpresaTeste@EmpresaTeste.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/empresa/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"empresa",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
