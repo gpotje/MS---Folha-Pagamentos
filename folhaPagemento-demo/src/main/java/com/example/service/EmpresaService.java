@@ -35,7 +35,7 @@ public class EmpresaService extends AbstractService {
 	public List<EmpresaDTO> findAll() {
 		List<Empresa> items = repository.findAll();
 		if (items == null || items.isEmpty()) {
-			throw new BusinessException("01", "Nenhuma empresa Encontrada");
+			throw new BusinessException("01", "No companies found");
 		}
 		return items.stream().map(e -> convertToDto(e)).collect(Collectors.toList());
 	}
@@ -45,7 +45,7 @@ public class EmpresaService extends AbstractService {
 		if (existing.isPresent())
 			return convertToDto(existing.get());
 
-		throw new BusinessException("100", "Empresa não encontrada com id: " + id);
+		throw new BusinessException("100", "No companies found with this id: " + id);
 	}
 
 

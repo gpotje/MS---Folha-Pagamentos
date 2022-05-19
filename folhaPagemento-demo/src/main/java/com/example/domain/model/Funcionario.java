@@ -2,6 +2,7 @@ package com.example.domain.model;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -15,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class Funcionario extends AbstractEntity<Long> {
 
 	@Column(length = 60)
@@ -30,4 +32,9 @@ public class Funcionario extends AbstractEntity<Long> {
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "empresa_id")
 	private Empresa empresa;
+	
+    public Double obterSaldoContaCorrente() {
+        return this.contaCorrente.getBalance();
+    }
 }
+

@@ -30,12 +30,12 @@ public class GlobalControllerAdvice {
 	@ExceptionHandler(ConstraintViolationException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	ResponseEntity<ResponseDefault> handleConstraintViolationException(ConstraintViolationException e){
-		return new ResponseEntity<>( new ResponseDefault("",e.getMessage()),HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>( new ResponseDefault("Entity does not contain valid values",e.getMessage()),HttpStatus.BAD_REQUEST);
 	}
 	
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<?> handleDataIntegrityViolationException(DataIntegrityViolationException exception) {
-        return new ResponseEntity<>(new ResponseDefault("101", "Ocorreu erro de integridade. Outra informação depende desta."), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ResponseDefault("101", "Integrity error occurred"), HttpStatus.BAD_REQUEST);
     }
 
 //    @ExceptionHandler(ExpiredJwtExceptio.class)
@@ -45,7 +45,7 @@ public class GlobalControllerAdvice {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleException(Exception exception) {
-        return new ResponseEntity<>(new ResponseDefault("100", "Ocorreu algum erro não reconhecido"), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ResponseDefault("100", "An unknown error has occurred"), HttpStatus.BAD_REQUEST);
     }  
 	
 	
