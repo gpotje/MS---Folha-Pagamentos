@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import com.example.domain.dto.FuncionarioDTO;
 import com.example.domain.model.ContaCorrente;
 import com.example.domain.model.Empresa;
@@ -28,25 +27,62 @@ public class FuncionarioService extends AbstractService {
 
 	public List<FuncionarioDTO> findAll() {
 		List<Funcionario> items = funcionarioRepository.findAll();
-		if (items == null || items.isEmpty())throw new BusinessException("01", "No Employees found");
-		
-		return items.stream()
-				.map(this::convertToDtoFuncionario)
-				.collect(Collectors.toList());
+		if (items == null || items.isEmpty())
+			throw new BusinessException("01", "No Employees found");
+
+		return items.stream().map(this::convertToDtoFuncionario).collect(Collectors.toList());
+	}
+
+	public FuncionarioDTO create(FuncionarioDTO payload) {
+		Empresa empresaOptional = findByIdEmpresa(payload.getId());
+		ContaCorrente contaCorrente = new ContaCorrente(payload.getBalance());
+		Funcionario savedFuncionario = funcionarioRepository.save(payload.toEntity(empresaOptional, contaCorrente));
+		return convertToDtoFuncionario(savedFuncionario);
+	}
+
+	private Funcionario findByIdFuncionario(Long id) {
+		Optional<Funcionario> existingItemOptional = funcionarioRepository.findById(id);
+		if (existingItemOptional.isPresent()) {
+			return existingItemOptional.get();
 		}
-	
-	  public FuncionarioDTO create(FuncionarioDTO payload) {
-	        Optional<Empresa> empresaOptional = empresaRepository.findById(payload.getCompanyId());
-	        if (!empresaOptional.isPresent()) {
-	            throw new BusinessException("01", "Company not found with id: "+payload.getCompanyId());
-	        }
-	        ContaCorrente contaCorrente = new ContaCorrente(payload.getBalance());
-	        Funcionario savedFuncionario = funcionarioRepository.save(payload.toEntity(empresaOptional.get(), contaCorrente));
+		throw new BusinessException("01", "Employee not found with id:" + id);
+	}
 
-	        return convertToDtoFuncionario(savedFuncionario);
-	    }
-
+	public FuncionarioDTO update(Long id, FuncionarioDTO payload) {
+		Empresa findByIdEmpresa = findByIdEmpresa(payload.getId());
+		Funcionario findByIdFuncionario = findByIdFuncionario(id);
+		
+		if(findByIdFuncionario != null) {
+			findByIdFuncionario.setName(payload.getName());
+			findByIdFuncionario.setSalary(payload.getSalary());
+			findByIdFuncionario.setEmpresa(findByIdEmpresa);
+			return convertToDtoFuncionario(funcionarioRepository.save(findByIdFuncionario));
+		}
+		throw new BusinessException("01", "Employee not found with id:" + id);
+		
+	}
 	
+	public FuncionarioDTO findByIdFuncionarioDto(Long id) {
+		return convertToDtoFuncionario(findByIdFuncionario(id));
+	}
+	
+	public void delete(Long id) {
+		Funcionario findByIdFuncionarioDelete = findByIdFuncionario(id);
+		funcionarioRepository.delete(findByIdFuncionarioDelete);
+	}
+
+	public Double getSaldo(Long id) {
+		Funcionario findByIdFuncionario = findByIdFuncionario(id);
+		return findByIdFuncionario.obterSaldoContaCorrente();
+	}
+	
+	private Empresa findByIdEmpresa(Long id) {
+		Optional<Empresa> empresaOptional = empresaRepository.findById(id);
+		if (empresaOptional.isPresent()) {
+			return empresaOptional.get();
+		}
+		throw new BusinessException("01", "Company not found with id:" + id);
+	}
 	
 
 	private FuncionarioDTO convertToDtoFuncionario(Funcionario funcionario) {

@@ -11,5 +11,9 @@ insert into empresa(id,corporate_name,email,conta_corrente_id) values(4,'Nubank'
 insert into empresa(id,corporate_name,email,conta_corrente_id) values(5,'adidas','adidas@teste.com.br',5);
 
 
+insert into funcionario(ID,NAME,SALARY,CONTA_CORRENTE_ID,EMPRESA_ID) values(1,'Gabriel Potje',1.500,1,1);
+insert into funcionario(ID,NAME,SALARY,CONTA_CORRENTE_ID,EMPRESA_ID) values(2,'Padovinha',1.500,2,1);
+
+
 
 
