@@ -1,26 +1,24 @@
-package com.example.domain.model;
+package com.example.domain.dto;
 
 import java.io.Serializable;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@NoArgsConstructor
 public class FolhaMessage implements Serializable {
 
-	private static final long serialVersionUID = 8802203274773714932L;
-
+	private static final long serialVersionUID = 1L;
+	
 	@JsonProperty("email")
 	private String email;
-
-	@JsonProperty("funcionarios")
+	
+	@JsonProperty("email")
 	private String funcionarios;
 
 }

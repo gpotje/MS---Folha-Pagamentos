@@ -48,10 +48,9 @@ public class FuncionarioController {
     @PostMapping
     public ResponseEntity<FuncionarioDTO> create(@Valid @RequestBody FuncionarioDTO payload, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-        	//throw new BusinessExceptionFiledError(bindingResult.getFieldErrors().,HttpStatus.BAD_REQUEST);
-        	
+ 
         	 String erros = bindingResult.getFieldErrors().stream().map(e -> e.getDefaultMessage()).collect(Collectors.joining(", "));
-             throw new BusinessException("10", erros);
+             throw new BusinessException("10", " Validation errors : [ " + erros + " ]");
         }
         return new ResponseEntity<>(service.create(payload), HttpStatus.CREATED);
     }
