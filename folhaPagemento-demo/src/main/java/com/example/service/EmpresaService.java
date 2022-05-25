@@ -47,6 +47,14 @@ public class EmpresaService extends AbstractService {
 
 		throw new BusinessException("100", "No companies found with this id: " + id);
 	}
+	
+	public Empresa findByIdEmpresa(Long id) {
+		Optional<Empresa> existing = repository.findById(id);
+		if (existing.isPresent())
+			return existing.get();
+
+		throw new BusinessException("100", "No companies found with this id: " + id);
+	}
 
 
 	

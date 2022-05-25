@@ -1,41 +1,58 @@
 package com.example.service;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.domain.model.Empresa;
-import com.example.exception.BusinessException;
+import com.example.domain.model.Funcionario;
+import com.example.exception.FolhaPagamentoException;
 import com.example.mapper.AbstractService;
-import com.example.repository.EmpresaRepository;
-import com.example.repository.FuncionarioRepository;
 
 @Service
 public class FolhaPagamentoService extends AbstractService{
 
+	private static final double PERCENTUAL_DESCONTO = 0.38D;
+
 	@Autowired
-	private EmpresaRepository empresaRepository;
+	private EmpresaService empresaService;
 	
 	@Autowired
-	private FuncionarioRepository funcionarioRepository;
+	private FuncionarioService funcionarioService;
 	
-//	@Autowired
-//	private ContaCorrenteService contaCorrenteService;
-//	
-//	@Autowired
-//	private FolhaMessageSender folhaMessageSender;
+	@Autowired
+	private ContaCorrenteService contaCorrenteService;
+	
+	@Autowired
+	private FolhaMessageSender folhaMessageSender;
 	
 	
-	public void pegarFolhaDaEmpresa(Long id) throws Exception {
-		Optional<Empresa> empresaOptional = empresaRepository.findById(id);
-        if (!empresaOptional.isPresent()) {
-        	throw new BusinessException("100", "No companies found with this id: " + id);
-        }
+	public void pegarFolhaDaEmpresa(Long idEmpresa) throws Exception {
 		
-        Empresa empresa =  empresaOptional.get();
-        funcionarioRepository.findAllByEmpresa(empresa);
+		Empresa findByIdEmpresa = empresaService.findByIdEmpresa(idEmpresa);
 		
+		List<Funcionario> listEmployeesByCompany = funcionarioService.findAllFuncionarioByEmpresa(idEmpresa);
+		
+		
+		Double valorTotalFolha = listEmployeesByCompany.stream().map( f -> {
+			
+			try {
+				contaCorrenteService.transfer(findByIdEmpresa.getContaCorrente(), f.getContaCorrente(), f.getSalary());
+				
+			}catch (Exception e) {
+				 throw new FolhaPagamentoException("Erro no pagamento do Funcionario: "+ f.getName()  + "-- erro :" + e.getMessage());
+			}
+			return f.getSalary();
+		}).reduce(0D, Double :: sum);
+		
+		valorTotalFolha = valorTotalFolha * PERCENTUAL_DESCONTO / 100;
+		contaCorrenteService.debit(findByIdEmpresa.getContaCorrente(), valorTotalFolha);
+		
+		String nomes = listEmployeesByCompany.stream().map( f -> f.getName()).collect(Collectors.joining(", "));
+		
+		folhaMessageSender.enviaEmailDaFolha(findByIdEmpresa.getCorporateName(), nomes);
 		
 	}
 	

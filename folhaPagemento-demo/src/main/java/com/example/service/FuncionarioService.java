@@ -13,7 +13,6 @@ import com.example.domain.model.Empresa;
 import com.example.domain.model.Funcionario;
 import com.example.exception.BusinessException;
 import com.example.mapper.AbstractService;
-import com.example.repository.EmpresaRepository;
 import com.example.repository.FuncionarioRepository;
 
 @Service
@@ -23,7 +22,7 @@ public class FuncionarioService extends AbstractService {
 	private FuncionarioRepository funcionarioRepository;
 
 	@Autowired
-	private EmpresaRepository empresaRepository;
+	private EmpresaService empresaService;
 
 	public List<FuncionarioDTO> findAll() {
 		List<Funcionario> items = funcionarioRepository.findAll();
@@ -34,7 +33,7 @@ public class FuncionarioService extends AbstractService {
 	}
 
 	public FuncionarioDTO create(FuncionarioDTO payload) {
-		Empresa empresaOptional = findByIdEmpresa(payload.getId());
+		Empresa empresaOptional = empresaService.findByIdEmpresa(payload.getId());
 		ContaCorrente contaCorrente = new ContaCorrente(payload.getBalance());
 		Funcionario savedFuncionario = funcionarioRepository.save(payload.toEntity(empresaOptional, contaCorrente));
 		return convertToDtoFuncionario(savedFuncionario);
@@ -49,7 +48,7 @@ public class FuncionarioService extends AbstractService {
 	}
 
 	public FuncionarioDTO update(Long id, FuncionarioDTO payload) {
-		Empresa findByIdEmpresa = findByIdEmpresa(payload.getId());
+		Empresa findByIdEmpresa = empresaService.findByIdEmpresa(payload.getId());
 		Funcionario findByIdFuncionario = findByIdFuncionario(id);
 		
 		if(findByIdFuncionario != null) {
@@ -75,15 +74,20 @@ public class FuncionarioService extends AbstractService {
 		Funcionario findByIdFuncionario = findByIdFuncionario(id);
 		return findByIdFuncionario.obterSaldoContaCorrente();
 	}
-	
-	private Empresa findByIdEmpresa(Long id) {
-		Optional<Empresa> empresaOptional = empresaRepository.findById(id);
-		if (empresaOptional.isPresent()) {
-			return empresaOptional.get();
+		
+	public List<Funcionario> findAllFuncionarioByEmpresa(Empresa empresa){
+		List<Funcionario> findAllByEmpresa = funcionarioRepository.findAllByEmpresa(empresa);
+		if(findAllByEmpresa != null && !findAllByEmpresa.isEmpty()) {
+			return findAllByEmpresa;
 		}
-		throw new BusinessException("01", "Company not found with id:" + id);
+		throw new BusinessException("01", "The company " + empresa.getCorporateName() + " has no employees ");
 	}
 	
+	
+	public List<Funcionario> findAllFuncionarioByEmpresa(Long idEmpresa){
+		Empresa findByIdEmpresa = empresaService.findByIdEmpresa(idEmpresa);
+		return findAllFuncionarioByEmpresa(findByIdEmpresa);		
+	}
 
 	private FuncionarioDTO convertToDtoFuncionario(Funcionario funcionario) {
 		FuncionarioDTO dto = convertEntityToDTO(funcionario, FuncionarioDTO.class);

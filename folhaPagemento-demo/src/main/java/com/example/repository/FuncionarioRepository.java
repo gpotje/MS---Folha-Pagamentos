@@ -12,5 +12,6 @@ import com.example.domain.model.Funcionario;
 public interface FuncionarioRepository extends JpaRepository<Funcionario, Long>{
 	
 	List<Funcionario> findAllByEmpresa(Empresa empresa);
+	
 
 }
