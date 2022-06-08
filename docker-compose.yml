@@ -1,0 +1,36 @@
+#sudo docker-compose up -d
+version: '2'
+
+services:
+  postgres-compose-network:
+    image: postgres
+    environment:
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: debian23
+    ports:
+      - "5432:5432"
+    volumes:
+      - ~/.docker-conf/postgresql:/var/lib/postgresql/data 
+    networks:
+      - rede-interna
+      
+
+    
+rabbitmq:
+ image: rabbitmq:3-management-alpine
+ container_name: 'rabbitmq'
+ environment:
+  RABBITMQ_DEFAULT_USER: "guest"
+  RABBITMQ_DEFAULT_PASS: "12345678"
+ ports:
+  - 5672:5672
+  - 15672:15672
+ volumes:
+  - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+  - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq/
+ networks:
+  - rede-interna
+  
+networks: 
+  rede-interna:
+    driver: bridge

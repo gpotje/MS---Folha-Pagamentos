@@ -15,23 +15,25 @@ public class ContaCorrenteService extends AbstractService {
 	@Autowired
 	ContaCorrenteRepository repository;
 
-	
 	@Transactional
 	public void debit(ContaCorrente contaCorrente, Double valueToBeDebit) throws Exception {
-		
-		if(contaCorrente.getBalance() < valueToBeDebit) throw new Exception("There is not enough balance");
-		
+
+		if (contaCorrente.getBalance() < valueToBeDebit)
+			throw new Exception("There is not enough balance");
+
 		contaCorrente.setBalance(contaCorrente.getBalance() - valueToBeDebit);
 		repository.save(contaCorrente);
+
 	}
-	
+
 	@Transactional
 	public void credit(ContaCorrente contaCorrente, Double valueToBeCredit) {
 		contaCorrente.setBalance(contaCorrente.getBalance() + valueToBeCredit);
 		repository.save(contaCorrente);
 	}
 
-	public void transfer(ContaCorrente AccountToBeDebited, ContaCorrente AccountToBeCredited , Double amountToBeTransferred) throws Exception {
+	public void transfer(ContaCorrente AccountToBeDebited, ContaCorrente AccountToBeCredited,
+			Double amountToBeTransferred) throws Exception {
 		debit(AccountToBeDebited, amountToBeTransferred);
 		credit(AccountToBeCredited, amountToBeTransferred);
 	}

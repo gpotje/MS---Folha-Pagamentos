@@ -6,16 +6,18 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import org.hibernate.annotations.NotFound;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Entity
 @NoArgsConstructor
 @Data
+@Builder
 public class Empresa  extends AbstractEntity<Long>{
 
 		
