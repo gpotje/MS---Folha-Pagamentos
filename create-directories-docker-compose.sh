@@ -9,4 +9,4 @@ cd rabbitmq;
 mkdir data;
 mkdir log;
 
-
+ 
