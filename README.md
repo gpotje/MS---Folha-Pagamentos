@@ -7,3 +7,8 @@ http://localhost:8080/api/h2-console/
 
 *Swagger*
 http://localhost:8080/api/swagger-ui.html
+
+
+*Gerar token*
+
+http://localhost:8080/api/oauth/token
