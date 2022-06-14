@@ -10,5 +10,4 @@ http://localhost:8080/api/swagger-ui.html
 
 
 *Gerar token*
-
 http://localhost:8080/api/oauth/token
