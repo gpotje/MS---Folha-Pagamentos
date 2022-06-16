@@ -19,8 +19,6 @@ import io.swagger.annotations.ApiModel;
 @ApiModel(value = "Funcionario")
 public class FuncionarioDTO {
 
-	private Long id;
-
 	@NotNull(message = "Nome do funcionário é obrigatório")
 	private String name;
 

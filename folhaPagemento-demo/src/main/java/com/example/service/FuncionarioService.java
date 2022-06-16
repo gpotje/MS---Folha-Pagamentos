@@ -33,7 +33,7 @@ public class FuncionarioService extends AbstractService {
 	}
 
 	public FuncionarioDTO create(FuncionarioDTO payload) {
-		Empresa empresaOptional = empresaService.findByIdEmpresa(payload.getId());
+		Empresa empresaOptional = empresaService.findByIdEmpresa(payload.getCompanyId());
 		ContaCorrente contaCorrente = new ContaCorrente(payload.getBalance());
 		Funcionario savedFuncionario = funcionarioRepository.save(payload.toEntity(empresaOptional, contaCorrente));
 		return convertToDtoFuncionario(savedFuncionario);
@@ -48,7 +48,7 @@ public class FuncionarioService extends AbstractService {
 	}
 
 	public FuncionarioDTO update(Long id, FuncionarioDTO payload) {
-		Empresa findByIdEmpresa = empresaService.findByIdEmpresa(payload.getId());
+		Empresa findByIdEmpresa = empresaService.findByIdEmpresa(payload.getCompanyId());
 		Funcionario findByIdFuncionario = findByIdFuncionario(id);
 		
 		if(findByIdFuncionario != null) {

@@ -12,16 +12,11 @@
 					"name": "All",
 					"request": {
 						"auth": {
-							"type": "basic",
-							"basic": [
+							"type": "bearer",
+							"bearer": [
 								{
-									"key": "password",
-									"value": "abc123",
-									"type": "string"
-								},
-								{
-									"key": "username",
-									"value": "user",
+									"key": "token",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -29,14 +24,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/empresa/all",
-							"protocol": "http",
+							"raw": "{{url}}/empresa/all",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "8080",
 							"path": [
-								"api",
 								"empresa",
 								"all"
 							]
@@ -65,14 +57,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/empresa/2",
-							"protocol": "http",
+							"raw": "{{url}}/empresa/2",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "8080",
 							"path": [
-								"api",
 								"empresa",
 								"2"
 							]
@@ -84,16 +73,11 @@
 					"name": "Create-Empresa",
 					"request": {
 						"auth": {
-							"type": "basic",
-							"basic": [
+							"type": "bearer",
+							"bearer": [
 								{
-									"key": "password",
-									"value": "abc123",
-									"type": "string"
-								},
-								{
-									"key": "username",
-									"value": "user",
+									"key": "token",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -110,14 +94,11 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/empresa/",
-							"protocol": "http",
+							"raw": "{{url}}/empresa/",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "8080",
 							"path": [
-								"api",
 								"empresa",
 								""
 							]
@@ -134,16 +115,11 @@
 					"name": "create",
 					"request": {
 						"auth": {
-							"type": "basic",
-							"basic": [
+							"type": "bearer",
+							"bearer": [
 								{
-									"key": "password",
-									"value": "abc123",
-									"type": "string"
-								},
-								{
-									"key": "username",
-									"value": "user",
+									"key": "token",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -152,7 +128,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\n  \"companyId\": 1,\n   \"name\": \"Gabriel Potje\"\n \n}",
+							"raw": "{\n  \"balance\": 1.5,\n  \"companyId\": 1,\n  \"name\": \"gabriel lll\",\n  \"salary\": 100\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -160,14 +136,11 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/funcionario",
-							"protocol": "http",
+							"raw": "{{url}}/funcionario",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "8080",
 							"path": [
-								"api",
 								"funcionario"
 							]
 						}
@@ -185,7 +158,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "a1261058-969f-4a65-aa2d-be3cd93c24d2",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -202,14 +175,11 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/funcionario/all",
-							"protocol": "http",
+							"raw": "{{url}}/funcionario/all",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "8080",
 							"path": [
-								"api",
 								"funcionario",
 								"all"
 							]
@@ -224,16 +194,11 @@
 					},
 					"request": {
 						"auth": {
-							"type": "basic",
-							"basic": [
+							"type": "bearer",
+							"bearer": [
 								{
-									"key": "password",
-									"value": "abc123",
-									"type": "string"
-								},
-								{
-									"key": "username",
-									"value": "user",
+									"key": "token",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -250,14 +215,11 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/funcionario/1",
-							"protocol": "http",
+							"raw": "{{url}}/funcionario/1",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "8080",
 							"path": [
-								"api",
 								"funcionario",
 								"1"
 							]
@@ -269,6 +231,18 @@
 		},
 		{
 			"name": "Generate Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"postman.setEnvironmentVariable(\"token\", jsonData.access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"auth": {
 					"type": "basic",

@@ -28,6 +28,10 @@ public class SegurancaConfig extends WebSecurityConfigurerAdapter{
 		auth.inMemoryAuthentication().withUser("padovinha").password("def456").roles("ADMIN");
 	}
 	
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return NoOpPasswordEncoder.getInstance();
+	}
 
 	@Override
 	public void configure(WebSecurity web) {
