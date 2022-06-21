@@ -5,6 +5,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -28,6 +29,7 @@ public class SegurancaConfig extends WebSecurityConfigurerAdapter{
 		auth.inMemoryAuthentication().withUser("padovinha").password("def456").roles("ADMIN");
 	}
 	
+	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return NoOpPasswordEncoder.getInstance();
@@ -45,4 +47,15 @@ public class SegurancaConfig extends WebSecurityConfigurerAdapter{
                 "http://localhost:3000/**"
 				);
 	}
+	
+//	@Bean
+//	public SecurityWebFilterChain securityWebFilterChain(
+//	  ServerHttpSecurity http) {
+//		
+//	    return (SecurityWebFilterChain) http.authorizeExchange()
+//	      .pathMatchers("/actuator/**").permitAll()
+//	      .anyExchange().authenticated()
+//	      .and().build();
+//	}
+	
 }
